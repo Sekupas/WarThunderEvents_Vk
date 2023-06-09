@@ -10,6 +10,7 @@ vk = vk_session.get_api()
 
 wall = vk.wall.get(domain=domain, count=1)
 
+
 def get_videos(items: dict):
     list = []
     length = len(items)
@@ -21,6 +22,24 @@ def get_videos(items: dict):
             pass
     return list
 
+def get_number_res(items: list):
+    count = len(items)
+    for number in range(count):
+        type = items[number]['type']
+        if type == 'x':
+            photo_url = items[number]['url']
+            return photo_url
+    return items[0]['width']
+def get_photos(items: dict):
+    list = []
+    length = len(items)
+    for number in range(length):
+        try:
+            photo = get_number_res(items[number]['photo']['sizes'])
+            list.append(photo)
+        except:
+            pass
+    return list
 
 
 def get_all():
@@ -33,8 +52,13 @@ def get_all():
 
         attachments = items['attachments']
         url = f"https://vk.com/wall{wall['items'][-1]['owner_id']}_{wall['items'][-1]['id']}"
-        photo = attachments[0]['photo']['sizes'][4]['url']
+        photo = get_photos(attachments)
         videos = get_videos(attachments)
-        return url, text, videos, photo
+        if len(photo) > 0 and len(videos) > 0:
+            return url, text, videos, photo
+        elif len(photo) > 0 :
+            return url, text, photo
+        else:
+            return url, text, videos
     except Exception as e:
         return e
