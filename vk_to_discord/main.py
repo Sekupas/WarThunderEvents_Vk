@@ -1,4 +1,4 @@
-import discord
+#import discord
 from vk import get_all
 
 

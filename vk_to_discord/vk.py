@@ -47,7 +47,7 @@ def get_all():
         items = wall['items'][0]
         # print(items['owner_id'], items['post_id'])
         text = items['text']
-        text = f"`{text}`"
+        text = f"*{text}*"
 
 
         attachments = items['attachments']
